@@ -38,6 +38,9 @@
             this.txtServerPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.upDownMsgSize = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.buttonSendLargeMsg = new System.Windows.Forms.Button();
             this.lblSingleServerResp = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -50,8 +53,10 @@
             this.buttonStart = new System.Windows.Forms.Button();
             this.cycleTime = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblBytesRx = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownMsgSize)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.messagesPerCycle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cycleTime)).BeginInit();
@@ -135,16 +140,62 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblBytesRx);
+            this.groupBox2.Controls.Add(this.upDownMsgSize);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.buttonSendLargeMsg);
             this.groupBox2.Controls.Add(this.lblSingleServerResp);
             this.groupBox2.Controls.Add(this.txtMessage);
             this.groupBox2.Controls.Add(this.btnSend);
             this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(12, 367);
+            this.groupBox2.Location = new System.Drawing.Point(12, 306);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(368, 106);
+            this.groupBox2.Size = new System.Drawing.Size(368, 167);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Single Message";
+            // 
+            // upDownMsgSize
+            // 
+            this.upDownMsgSize.Location = new System.Drawing.Point(196, 124);
+            this.upDownMsgSize.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.upDownMsgSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.upDownMsgSize.Name = "upDownMsgSize";
+            this.upDownMsgSize.Size = new System.Drawing.Size(62, 20);
+            this.upDownMsgSize.TabIndex = 5;
+            this.upDownMsgSize.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
+            this.upDownMsgSize.Value = new decimal(new int[] {
+            80000,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(211, 108);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(47, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "MsgSize";
+            // 
+            // buttonSendLargeMsg
+            // 
+            this.buttonSendLargeMsg.Location = new System.Drawing.Point(276, 95);
+            this.buttonSendLargeMsg.Name = "buttonSendLargeMsg";
+            this.buttonSendLargeMsg.Size = new System.Drawing.Size(86, 57);
+            this.buttonSendLargeMsg.TabIndex = 3;
+            this.buttonSendLargeMsg.Text = "Send Large Message";
+            this.buttonSendLargeMsg.UseVisualStyleBackColor = true;
+            this.buttonSendLargeMsg.Click += new System.EventHandler(this.buttonSendLargeMsg_Click);
             // 
             // lblSingleServerResp
             // 
@@ -177,7 +228,7 @@
             this.groupBox3.Controls.Add(this.buttonStart);
             this.groupBox3.Controls.Add(this.cycleTime);
             this.groupBox3.Enabled = false;
-            this.groupBox3.Location = new System.Drawing.Point(20, 186);
+            this.groupBox3.Location = new System.Drawing.Point(12, 124);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(354, 160);
             this.groupBox3.TabIndex = 4;
@@ -290,6 +341,15 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // lblBytesRx
+            // 
+            this.lblBytesRx.AutoSize = true;
+            this.lblBytesRx.Location = new System.Drawing.Point(163, 148);
+            this.lblBytesRx.Name = "lblBytesRx";
+            this.lblBytesRx.Size = new System.Drawing.Size(61, 13);
+            this.lblBytesRx.TabIndex = 6;
+            this.lblBytesRx.Text = "Bytes Rx = ";
+            // 
             // TCPClientTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -303,13 +363,14 @@
             this.MaximizeBox = false;
             this.Name = "TCPClientTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TCP Client (v 1.0.0.0)";
+            this.Text = "TCP Client (v 1.0.0.1)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
             this.Load += new System.EventHandler(this.Client_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownMsgSize)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.messagesPerCycle)).EndInit();
@@ -341,6 +402,10 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblSingleServerResp;
         private System.Windows.Forms.Label lblContinuousServerResp;
+        private System.Windows.Forms.Button buttonSendLargeMsg;
+        private System.Windows.Forms.NumericUpDown upDownMsgSize;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblBytesRx;
     }
 }
 

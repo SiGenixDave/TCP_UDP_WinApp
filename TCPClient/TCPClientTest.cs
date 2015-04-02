@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Threading;
 
 namespace TCPClientTest
 {
@@ -20,6 +22,13 @@ namespace TCPClientTest
         public TCPClientTest ()
         {
             InitializeComponent ();
+            InitBulkSendDataArray ();
+        }
+
+        public TCPClientTest (String address, String port) : this ()
+        {
+            txtServerIP.Text = address;
+            txtServerPort.Text = port;
         }
 
         #endregion Constructor
@@ -28,6 +37,18 @@ namespace TCPClientTest
 
         private void Client_Load (object sender, EventArgs e)
         {
+        }
+
+        // Create a fixed size message
+        byte[] mByteData = new Byte[0x10000 * 4];
+
+        private void InitBulkSendDataArray ()
+        {
+            for (UInt32 index = 0; index < 0x10000; index++)
+            {
+                Byte []tmpData = BitConverter.GetBytes(index);
+                Array.Copy (tmpData, 0, mByteData, index * 4, 4);
+            }
         }
 
         private void btnSend_Click (object sender, EventArgs e)
@@ -175,6 +196,46 @@ namespace TCPClientTest
                 localMsgCounter++;
                 msgCounter++;
             }
+        }
+
+        private void buttonSendLargeMsg_Click (object sender, EventArgs e)
+        {
+            NetworkStream stm = tcpClient.GetStream ();
+
+            int DATA_SIZE = Convert.ToInt32(upDownMsgSize.Value);
+
+            stm.Write (mByteData, 0, mByteData.Length);
+
+            byte [] bb = new Byte [DATA_SIZE]; 
+
+            int bytesRead = 0;
+            do
+            {
+                stm.ReadTimeout = 5000;
+                try
+                {
+                    int k = stm.Read (bb, 0, DATA_SIZE);
+                    bytesRead += k;
+                    Debug.WriteLine ("K = " + k.ToString ());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show ("Read Error: " + ex.Message, "TCP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            } while (bytesRead != DATA_SIZE);
+
+            lblBytesRx.Text = bytesRead.ToString ();
+
+            if (bytesRead == DATA_SIZE)
+            {
+                MessageBox.Show ("Large msg sent/received successfully");
+            }
+            else
+            {
+                MessageBox.Show ("Large msg sent/received unsuccessfully");
+                Debug.WriteLine ("BytesRead = " + bytesRead.ToString ());
+            }
+
         }
     }
 }

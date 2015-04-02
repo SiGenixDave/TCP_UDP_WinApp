@@ -15,7 +15,17 @@ namespace TCPClientTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TCPClientTest());
+
+            string[] args = Environment.GetCommandLineArgs ();
+
+            if (args.Length == 1)
+            {
+                Application.Run (new TCPClientTest ());
+            }
+            else
+            {
+                Application.Run (new TCPClientTest (args[1], args[2]));
+            }
         }
     }
 }
