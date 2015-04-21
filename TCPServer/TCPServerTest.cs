@@ -12,11 +12,11 @@ namespace TCPServerTest
         TcpServer _tcpServer;
         EchoServiceProvider _provider;
         UInt16 _port;
-        
+
         public TCPServerTest (UInt16 port = 12345)
         {
             _port = port;
-            InitializeComponent();
+            InitializeComponent ();
         }
 
         public void UpdateTestBox (Object textBoxInfo)
@@ -27,34 +27,34 @@ namespace TCPServerTest
                 Invoke (new System.Threading.WaitCallback (UpdateTestBox), textBoxInfo);
                 return;
             }
- 
+
             rtxtStatus.Text += (string)textBoxInfo;
         }
 
-        private void Server_Load(object sender, EventArgs e)
+        private void Server_Load (object sender, EventArgs e)
         {
             _provider = new EchoServiceProvider (this);
             _tcpServer = new TcpServer (_provider, _port, this);
             this.Text += " - Port:" + _port.ToString ();
             _tcpServer.Start ();
-            
+
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void btnExit_Click (object sender, EventArgs e)
         {
-            Close();
+            Close ();
         }
 
-               
+
         #region Other Methods
 
-        private void UpdateStatus(string status)
+        private void UpdateStatus (string status)
         {
             rtxtStatus.Text += status + Environment.NewLine;
             // Force vertical scroll to bottom of multi-line textbox
             rtxtStatus.SelectionStart = rtxtStatus.Text.Length;
-            rtxtStatus.ScrollToCaret();
-            rtxtStatus.Refresh();
+            rtxtStatus.ScrollToCaret ();
+            rtxtStatus.Refresh ();
         }
 
         #endregion

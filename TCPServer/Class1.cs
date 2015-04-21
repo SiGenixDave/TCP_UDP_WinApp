@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace TCPServerTest
 {
-    /// <SUMMARY>
+    /// <summary>
     /// This class holds useful information
     /// for keeping track of each client connected
     /// to the server, and provides the means
     /// for sending/receiving data to the remote
     /// host.
-    /// </SUMMARY>
+    /// </summary>
     public class ConnectionState
     {
         internal Socket _conn;
@@ -22,34 +22,34 @@ namespace TCPServerTest
         internal TcpServiceProvider _provider;
         internal byte[] _buffer;
 
-        /// <SUMMARY>
+        /// <summary>
         /// Tells you the IP Address of the remote host.
-        /// </SUMMARY>
+        /// </summary>
         public EndPoint RemoteEndPoint
         {
             get { return _conn.RemoteEndPoint; }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Returns the number of bytes waiting to be read.
-        /// </SUMMARY>
+        /// </summary>
         public int AvailableData
         {
             get { return _conn.Available; }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Tells you if the socket is connected.
-        /// </SUMMARY>
+        /// </summary>
         public bool Connected
         {
             get { return _conn.Connected; }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Reads data on the socket, returns
         /// the number of bytes read.
-        /// </SUMMARY>
+        /// </summary>
         public int Read (byte[] buffer, int offset, int count)
         {
             try
@@ -65,9 +65,9 @@ namespace TCPServerTest
             }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Sends Data to the remote host.
-        /// </SUMMARY>
+        /// </summary>
         public bool Write (byte[] buffer, int offset, int count)
         {
             try
@@ -81,9 +81,9 @@ namespace TCPServerTest
             }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Ends connection with the remote host.
-        /// </SUMMARY>
+        /// </summary>
         public void EndConnection ()
         {
             if (_conn != null && _conn.Connected)
@@ -95,37 +95,37 @@ namespace TCPServerTest
         }
     }
 
-    /// <SUMMARY>
+    /// <summary>
     /// Allows to provide the server with
     /// the actual code that is going to service
     /// incoming connections.
-    /// </SUMMARY>
+    /// </summary>
     public abstract class TcpServiceProvider : ICloneable
     {
-        /// <SUMMARY>
+        /// <summary>
         /// Provides a new instance of the object.
-        /// </SUMMARY>
+        /// </summary>
         public virtual object Clone ()
         {
             throw new Exception ("Derived clases" +
                       " must override Clone method.");
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Gets executed when the server accepts a new connection.
-        /// </SUMMARY>
+        /// </summary>
         public abstract void OnAcceptConnection (ConnectionState state);
 
-        /// <SUMMARY>
+        /// <summary>
         /// Gets executed when the server detects incoming data.
         /// This method is called only if
         /// OnAcceptConnection has already finished.
-        /// </SUMMARY>
+        /// </summary>
         public abstract void OnReceiveData (ConnectionState state);
 
-        /// <SUMMARY>
+        /// <summary>
         /// Gets executed when the server needs to shutdown the connection.
-        /// </SUMMARY>
+        /// </summary>
         public abstract void OnDropConnection (ConnectionState state);
     }
 
@@ -142,10 +142,10 @@ namespace TCPServerTest
         private WaitCallback AcceptConnection;
         private AsyncCallback ReceivedDataReady;
 
-        /// <SUMMARY>
+        /// <summary>
         /// Initializes server. To start accepting
         /// connections call Start method.
-        /// </SUMMARY>
+        /// </summary>
         public TcpServer (TcpServiceProvider provider, int port, TCPServerTest uiForm)
         {
             _uiForm = uiForm;
@@ -159,10 +159,10 @@ namespace TCPServerTest
             ReceivedDataReady = new AsyncCallback (ReceivedDataReady_Handler);
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Start accepting connections.
         /// A false return value tell you that the port is not available.
-        /// </SUMMARY>
+        /// </summary>
         public bool Start ()
         {
             try
@@ -178,9 +178,9 @@ namespace TCPServerTest
             }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Callback function: A new connection is waiting.
-        /// </SUMMARY>
+        /// </summary>
         private void ConnectionReady_Handler (IAsyncResult ar)
         {
             lock (this)
@@ -214,9 +214,9 @@ namespace TCPServerTest
             }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Executes OnAcceptConnection method from the service provider.
-        /// </SUMMARY>
+        /// </summary>
         private void AcceptConnection_Handler (object state)
         {
             ConnectionState st = state as ConnectionState;
@@ -231,9 +231,9 @@ namespace TCPServerTest
                   ReceivedDataReady, st);
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Executes OnReceiveData method from the service provider.
-        /// </SUMMARY>
+        /// </summary>
         private void ReceivedDataReady_Handler (IAsyncResult ar)
         {
             ConnectionState st = ar.AsyncState as ConnectionState;
@@ -255,9 +255,9 @@ namespace TCPServerTest
             }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Shuts down the server
-        /// </SUMMARY>
+        /// </summary>
         public void Stop ()
         {
             lock (this)
@@ -280,9 +280,9 @@ namespace TCPServerTest
             }
         }
 
-        /// <SUMMARY>
+        /// <summary>
         /// Removes a connection from the list
-        /// </SUMMARY>
+        /// </summary>
         internal void DropConnection (ConnectionState st)
         {
             lock (this)
@@ -315,10 +315,10 @@ namespace TCPServerTest
         }
     }
 
-    /// <SUMMARY>
+    /// <summary>
     /// EchoServiceProvider. Just replies messages
     /// received from the clients.
-    /// </SUMMARY>
+    /// </summary>
     public class EchoServiceProvider : TcpServiceProvider
     {
         private string _receivedStr;

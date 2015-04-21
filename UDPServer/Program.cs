@@ -15,7 +15,16 @@ namespace UDPServerTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UDPServerTest());
+            string[] args = Environment.GetCommandLineArgs ();
+
+            if (args.Length == 1)
+            {
+                Application.Run (new UDPServerTest ());
+            }
+            else
+            {
+                Application.Run (new UDPServerTest (Convert.ToUInt16 (args[1])));
+            }
         }
     }
 }

@@ -15,7 +15,17 @@ namespace UDPClientTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run (new UDPClientTest ());
+            string[] args = Environment.GetCommandLineArgs ();
+
+            if (args.Length == 1)
+            {
+                Application.Run (new UDPClientTest ());
+            }
+            else
+            {
+                Application.Run (new UDPClientTest (args[1], args[2]));
+            }
+
         }
     }
 }

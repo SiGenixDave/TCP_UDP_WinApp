@@ -32,72 +32,79 @@ namespace UDPClientTest
 
         public UDPClientTest ()
         {
-            InitializeComponent();
+            InitializeComponent ();
         }
+
+        public UDPClientTest (String address, String port) : this()
+        {
+            txtServerIP.Text = address;
+            txtServerPort.Text = port;
+        }
+
 
         #endregion
 
         #region Events
 
-        private void Client_Load(object sender, EventArgs e)
+        private void Client_Load (object sender, EventArgs e)
         {
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void btnSend_Click (object sender, EventArgs e)
         {
             try
             {
                 // Get packet as byte array
-                byte[] byteData = Encoding.ASCII.GetBytes(txtMessage.Text);
+                byte[] byteData = Encoding.ASCII.GetBytes (txtMessage.Text);
 
                 // Send packet to the server
-                clientSocket.BeginSendTo(byteData, 0, byteData.Length, SocketFlags.None, epServer, new AsyncCallback(this.SendData), null);
+                clientSocket.BeginSendTo (byteData, 0, byteData.Length, SocketFlags.None, epServer, new AsyncCallback (this.SendData), null);
 
                 txtMessage.Text = string.Empty;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Send Error: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show ("Send Error: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void Client_FormClosing(object sender, FormClosingEventArgs e)
+        private void Client_FormClosing (object sender, FormClosingEventArgs e)
         {
             try
             {
                 if (this.clientSocket != null)
                 {
                     // Close the socket
-                    this.clientSocket.Close();
+                    this.clientSocket.Close ();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Closing Error: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show ("Closing Error: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        private void btnConnect_Click (object sender, EventArgs e)
         {
             try
             {
                 // Initialize socket
-                this.clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                this.clientSocket = new Socket (AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
                 // Initialize server IP
-                IPAddress serverIP = IPAddress.Parse(txtServerIP.Text.Trim());
+                IPAddress serverIP = IPAddress.Parse (txtServerIP.Text.Trim ());
 
                 // Initialize the IPEndPoint for the server and use desired port
-                IPEndPoint server = new IPEndPoint(serverIP, Convert.ToInt32(txtServerPort.Text));
+                IPEndPoint server = new IPEndPoint (serverIP, Convert.ToInt32 (txtServerPort.Text));
 
                 // Initialize the EndPoint for the server
                 epServer = (EndPoint)server;
 
                 // Get packet as byte array
-                byte[] data = Encoding.ASCII.GetBytes("Connect");
+                byte[] data = Encoding.ASCII.GetBytes ("Connect");
 
                 // Send data to server
-                clientSocket.BeginSendTo(data, 0, data.Length, SocketFlags.None, epServer, new AsyncCallback(this.SendData), null);
+                clientSocket.BeginSendTo (data, 0, data.Length, SocketFlags.None, epServer, new AsyncCallback (this.SendData), null);
 
                 // Initialize data stream
                 this.dataStream = new byte[1024];
@@ -110,28 +117,28 @@ namespace UDPClientTest
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection Error: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show ("Connection Error: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void btnExit_Click (object sender, EventArgs e)
         {
-            Close();
+            Close ();
         }
 
         #endregion
 
         #region Send And Receive
 
-        private void SendData(IAsyncResult ar)
+        private void SendData (IAsyncResult ar)
         {
             try
             {
-                clientSocket.EndSend(ar);
+                clientSocket.EndSend (ar);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Send Data: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show ("Send Data: " + ex.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -165,16 +172,16 @@ namespace UDPClientTest
         int cycle;
         private void SendCycleMessages ()
         {
-            int count = Convert.ToInt32(messagesPerCycle.Value);
+            int count = Convert.ToInt32 (messagesPerCycle.Value);
             int localMsgCounter = 1;
             while (localMsgCounter <= count)
             {
                 // Get packet as byte array
-                byte[] byteData = Encoding.ASCII.GetBytes ("DISP: " + cycle.ToString ("X") + ":" + msgCounter.ToString("X"));
+                byte[] byteData = Encoding.ASCII.GetBytes ("DISP: " + cycle.ToString ("X") + ":" + msgCounter.ToString ("X"));
 
                 // Send packet to the server
                 clientSocket.BeginSendTo (byteData, 0, byteData.Length, SocketFlags.None, epServer, new AsyncCallback (this.SendData), null);
-                
+
                 localMsgCounter++;
                 msgCounter++;
             }

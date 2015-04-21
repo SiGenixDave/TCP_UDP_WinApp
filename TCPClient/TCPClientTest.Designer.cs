@@ -38,6 +38,7 @@
             this.txtServerPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblBytesRx = new System.Windows.Forms.Label();
             this.upDownMsgSize = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonSendLargeMsg = new System.Windows.Forms.Button();
@@ -53,7 +54,6 @@
             this.buttonStart = new System.Windows.Forms.Button();
             this.cycleTime = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lblBytesRx = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.upDownMsgSize)).BeginInit();
@@ -154,6 +154,15 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Single Message";
+            // 
+            // lblBytesRx
+            // 
+            this.lblBytesRx.AutoSize = true;
+            this.lblBytesRx.Location = new System.Drawing.Point(163, 148);
+            this.lblBytesRx.Name = "lblBytesRx";
+            this.lblBytesRx.Size = new System.Drawing.Size(61, 13);
+            this.lblBytesRx.TabIndex = 6;
+            this.lblBytesRx.Text = "Bytes Rx = ";
             // 
             // upDownMsgSize
             // 
@@ -341,15 +350,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lblBytesRx
-            // 
-            this.lblBytesRx.AutoSize = true;
-            this.lblBytesRx.Location = new System.Drawing.Point(163, 148);
-            this.lblBytesRx.Name = "lblBytesRx";
-            this.lblBytesRx.Size = new System.Drawing.Size(61, 13);
-            this.lblBytesRx.TabIndex = 6;
-            this.lblBytesRx.Text = "Bytes Rx = ";
-            // 
             // TCPClientTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -363,7 +363,7 @@
             this.MaximizeBox = false;
             this.Name = "TCPClientTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TCP Client (v 1.0.0.1)";
+            this.Text = "TCP Client (v 1.0.0.2)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
             this.Load += new System.EventHandler(this.Client_Load);
             this.groupBox1.ResumeLayout(false);

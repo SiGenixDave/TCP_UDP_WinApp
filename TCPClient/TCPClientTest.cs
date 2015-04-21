@@ -25,7 +25,8 @@ namespace TCPClientTest
             InitBulkSendDataArray ();
         }
 
-        public TCPClientTest (String address, String port) : this ()
+        public TCPClientTest (String address, String port)
+            : this ()
         {
             txtServerIP.Text = address;
             txtServerPort.Text = port;
@@ -46,7 +47,7 @@ namespace TCPClientTest
         {
             for (UInt32 index = 0; index < 0x10000; index++)
             {
-                Byte []tmpData = BitConverter.GetBytes(index);
+                Byte[] tmpData = BitConverter.GetBytes (index);
                 Array.Copy (tmpData, 0, mByteData, index * 4, 4);
             }
         }
@@ -65,7 +66,7 @@ namespace TCPClientTest
                     stm.Write (byteData, 0, byteData.Length);
 
                     byte[] bb = new byte[1000];
-                    stm.ReadTimeout = 500; 
+                    stm.ReadTimeout = 500;
                     int k = stm.Read (bb, 0, 1000);
 
                     if (k != 0)
@@ -202,11 +203,11 @@ namespace TCPClientTest
         {
             NetworkStream stm = tcpClient.GetStream ();
 
-            int DATA_SIZE = Convert.ToInt32(upDownMsgSize.Value);
+            int DATA_SIZE = Convert.ToInt32 (upDownMsgSize.Value);
 
             stm.Write (mByteData, 0, mByteData.Length);
 
-            byte [] bb = new Byte [DATA_SIZE]; 
+            byte[] bb = new Byte[DATA_SIZE];
 
             int bytesRead = 0;
             do
