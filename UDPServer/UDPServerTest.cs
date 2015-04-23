@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.Collections;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
-
-using System.Net.Sockets;
-using System.Net;
-using System.Collections;
 
 namespace UDPServerTest
 {
@@ -37,9 +31,10 @@ namespace UDPServerTest
 
         // Status delegate
         private delegate void UpdateStatusDelegate (string status);
+
         private UpdateStatusDelegate updateStatusDelegate = null;
 
-        #endregion
+        #endregion Private Members
 
         #region Constructor
 
@@ -49,7 +44,7 @@ namespace UDPServerTest
             InitializeComponent ();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Events
 
@@ -83,6 +78,8 @@ namespace UDPServerTest
 
                 lblStatus.Text = "Listening";
 
+                String version = GetType ().Assembly.GetName ().Version.ToString ();
+                this.Text += " (" + version + ")";
                 this.Text += " - Port:" + _port.ToString ();
             }
             catch (Exception ex)
@@ -97,7 +94,7 @@ namespace UDPServerTest
             Close ();
         }
 
-        #endregion
+        #endregion Events
 
         #region Send And Receive
 
@@ -142,7 +139,7 @@ namespace UDPServerTest
             }
         }
 
-        #endregion
+        #endregion Send And Receive
 
         #region Other Methods
 
@@ -155,6 +152,6 @@ namespace UDPServerTest
             rtxtStatus.Refresh ();
         }
 
-        #endregion
+        #endregion Other Methods
     }
 }

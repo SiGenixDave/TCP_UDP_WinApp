@@ -38,6 +38,8 @@ namespace TCPClientTest
 
         private void Client_Load (object sender, EventArgs e)
         {
+            String version = GetType ().Assembly.GetName ().Version.ToString ();
+            this.Text += " (" + version + ")";
         }
 
         // Create a fixed size message
@@ -66,7 +68,7 @@ namespace TCPClientTest
                     stm.Write (byteData, 0, byteData.Length);
 
                     byte[] bb = new byte[1000];
-                    stm.ReadTimeout = 500;
+                    stm.ReadTimeout = 5000;
                     int k = stm.Read (bb, 0, 1000);
 
                     if (k != 0)
@@ -126,9 +128,17 @@ namespace TCPClientTest
 
         private void btnExit_Click (object sender, EventArgs e)
         {
-            NetworkStream stm = tcpClient.GetStream ();
-            stm.Close ();
-            tcpClient.Close ();
+            try
+            {
+                NetworkStream stm = tcpClient.GetStream ();
+                stm.Close ();
+                tcpClient.Close ();
+            }
+            catch (Exception ex)
+            {
+                // Intentionally do nothing
+                // Exception thrown due stream not being opened
+            }
             Close ();
         }
 

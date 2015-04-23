@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
-
-using System.Net.Sockets;
-using System.Net;
-
 
 namespace UDPClientTest
 {
@@ -26,7 +19,7 @@ namespace UDPClientTest
         // Data stream
         private byte[] dataStream = new byte[1024];
 
-        #endregion
+        #endregion Private Members
 
         #region Constructor
 
@@ -35,19 +28,22 @@ namespace UDPClientTest
             InitializeComponent ();
         }
 
-        public UDPClientTest (String address, String port) : this()
+        public UDPClientTest (String address, String port)
+            : this ()
         {
             txtServerIP.Text = address;
             txtServerPort.Text = port;
         }
 
-
-        #endregion
+        #endregion Constructor
 
         #region Events
 
         private void Client_Load (object sender, EventArgs e)
         {
+            String version = GetType ().Assembly.GetName ().Version.ToString ();
+
+            this.Text += " (" + version + ")";
         }
 
         private void btnSend_Click (object sender, EventArgs e)
@@ -126,7 +122,7 @@ namespace UDPClientTest
             Close ();
         }
 
-        #endregion
+        #endregion Events
 
         #region Send And Receive
 
@@ -142,9 +138,7 @@ namespace UDPClientTest
             }
         }
 
-
-        #endregion
-
+        #endregion Send And Receive
 
         private void timer1_Tick (object sender, EventArgs e)
         {
@@ -168,8 +162,9 @@ namespace UDPClientTest
             timer1.Enabled = false;
         }
 
-        int msgCounter;
-        int cycle;
+        private int msgCounter;
+        private int cycle;
+
         private void SendCycleMessages ()
         {
             int count = Convert.ToInt32 (messagesPerCycle.Value);

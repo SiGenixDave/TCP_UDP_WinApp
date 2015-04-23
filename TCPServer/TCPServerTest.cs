@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TCPServerTest
 {
     public partial class TCPServerTest : Form
     {
-        TcpServer _tcpServer;
-        EchoServiceProvider _provider;
-        UInt16 _port;
+        private TcpServer _tcpServer;
+        private EchoServiceProvider _provider;
+        private UInt16 _port;
 
         public TCPServerTest (UInt16 port = 12345)
         {
@@ -35,16 +31,16 @@ namespace TCPServerTest
         {
             _provider = new EchoServiceProvider (this);
             _tcpServer = new TcpServer (_provider, _port, this);
+            String version = GetType ().Assembly.GetName ().Version.ToString ();
+            this.Text += " (" + version + ")";
             this.Text += " - Port:" + _port.ToString ();
             _tcpServer.Start ();
-
         }
 
         private void btnExit_Click (object sender, EventArgs e)
         {
             Close ();
         }
-
 
         #region Other Methods
 
@@ -57,6 +53,6 @@ namespace TCPServerTest
             rtxtStatus.Refresh ();
         }
 
-        #endregion
+        #endregion Other Methods
     }
 }
